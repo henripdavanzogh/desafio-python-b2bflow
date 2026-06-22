@@ -1,5 +1,4 @@
-# gitignore completo para python coletado
-# de https://github.com/github/gitignore/blob/main/Python.gitignore
+# gitignore taken from https://github.com/github/gitignore/blob/main/Python.gitignore
 
 
 __pycache__/
