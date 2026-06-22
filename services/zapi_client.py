@@ -1,20 +1,38 @@
+import logging
+
 import requests
 from config import INSTANCE_ID, TOKEN, CLIENT_TOKEN
 
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
 
 def send_message(name, phone):
-    message = f"Olá, {name} tudo bem com você?"
+    try:
+        message = f"Olá, {name} tudo bem com você?"
 
-    # data
-    url = (
-        f"https://api.z-api.io/instances/{INSTANCE_ID}/token/{TOKEN}/send-text"
-    )
-    payload = {"phone": phone, "message": message}
-    headers = {"Client-Token": CLIENT_TOKEN}
-    response = requests.post(url=url, json=payload, headers=headers, timeout=5)
+        # data
+        url = f"https://api.z-api.io/instances/{INSTANCE_ID}/token/{TOKEN}/send-text"
+        payload = {"phone": phone, "message": message}
+        headers = {"Client-Token": CLIENT_TOKEN}
+        response = requests.post(
+            url=url, json=payload, headers=headers, timeout=5
+        )
+        if response.ok:
+            logging.info(f"Mensagem enviada para {name}")
+        elif response.status_code in (400, 405):
+            logging.info(
+                f"Erro na requisição: ({response.status_code}) -  {response.text}"
+            )
+        elif response.status_code == 415:
+            logging.info("Header: Content-Type não informado")
+        elif response.status_code >= 500:
+            logging.info(f"Erro na API: {response.text}")
+        else:
+            logging.info(
+                f"Erro inesperado: {response.status_code} - {response.text}"
+            )
 
-    # treat the errors on zapi_client.py
-    if response.status_code == 200:
-        print(f"Mensagem enviada para {name}")
-    else:
-        print(f"Erro ao enviar mensagem para {name}")
+    except requests.RequestException as error:
+        logging.info(f"Erro ao enviar mensagem: {error}")
