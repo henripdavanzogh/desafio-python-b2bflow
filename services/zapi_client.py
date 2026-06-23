@@ -22,15 +22,15 @@ def send_message(name, phone):
         if response.ok:
             logging.info(f"Mensagem enviada para {name}")
         elif response.status_code in (400, 405):
-            logging.info(
+            logging.error(
                 f"Erro na requisição: ({response.status_code}) -  {response.text}"
             )
         elif response.status_code == 415:
-            logging.info("Header: Content-Type não informado")
+            logging.error("Header: Content-Type não informado")
         elif response.status_code >= 500:
-            logging.info(f"Erro na API: {response.text}")
+            logging.error(f"Erro na API: {response.text}")
         else:
-            logging.info(
+            logging.error(
                 f"Erro inesperado: {response.status_code} - {response.text}"
             )
 
