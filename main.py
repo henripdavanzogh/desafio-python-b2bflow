@@ -4,6 +4,12 @@ from services.zapi_client import send_message
 
 load_dotenv()
 
-table_contacts = get_contacts()
-for contact in table_contacts:
-    send_message(contact["nome"], contact["telefone"])
+
+def main():
+    table_contacts = get_contacts()
+    for contact in table_contacts:
+        send_message(contact["nome"], contact["telefone"])
+
+
+if __name__ == "__main__":
+    main()
