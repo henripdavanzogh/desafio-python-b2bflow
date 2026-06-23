@@ -6,4 +6,4 @@ load_dotenv()
 
 table_contacts = get_contacts()
 for contact in table_contacts:
-    send_message(contact["name"], contact["number"])
+    send_message(contact["nome"], contact["telefone"])
